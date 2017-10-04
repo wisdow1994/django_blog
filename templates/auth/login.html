@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+{% load bootstrap3 %}
+{#大写的尴尬, 两个都要放在第一行,这样确实没有想到啊#}
+
+{% block title %}登陆页面{% endblock %}
+
+{% block page_content %}
+
+    <div class='page-header'>
+            <h1>登陆</h1>
+        </div>
+
+    <div class="col-md-4">
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% bootstrap_form_errors form layout='inline' %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary btn-lg active">
+                    登陆
+                </button>
+            {% endbuttons %}
+        </form>
+
+        <p>新用户？<a href="{% url 'auth:register' %}">点击前往注册</a></p>
+
+        <p>忘记密码?<a href="{% url 'auth:reset_password_request' %}">点击前往重置密码</a></p>
+    </div>
+
+
+
+{% endblock %}

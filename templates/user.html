@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load filter_tags %}
+
+{% block title %}{{ user.username }}的资料页{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+<img class="img-rounded profile-thumbnail" src="{{ user|avatar:'256'}}">
+    <div class="profile-header">
+        <h1>{{ user.username }}</h1>
+        {% if user.name or user.location %}
+        <p>
+            {% if user.name %}{{ user.name }}<br>{% endif %}
+            {% if user.location %}
+                来自 <a href="http://maps.baidu.com/?q={{ user.location }}">{{ user.location }}</a><br>
+            {% endif %}
+        </p>
+        {% endif %}
+        {% if request.user.is_superuser %}
+        <p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+        {% endif %}
+        {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+        <p>共发布了<b>{{ user.article_set.count }}</b>篇文章</p>
+        <p>
+            {% if request.user != user %}
+                {% if not request.user|is_following:user %}
+                <a href="{% url 'follow' user.username %}" class="btn btn-primary">关注</a>
+                {% else %}
+                <a href="{% url 'unfollow' user.username %}" class="btn btn-default">取消关注</a>
+                {% endif %}
+            {% endif %}
+            <a href="{% url 'followers' user.username %}">粉丝数:
+                <span class="badge">{{ user.follower_set.count|default:'0' }}</span>
+            </a>
+            <a href="{% url 'followeds' user.username %}">关注用户:
+                <span class="badge">{{ user.followed_set.count|default:'0' }}</span>
+            </a>
+            {% if request.user.is_authenticated and user != request.user and user|is_following:user %}' %}
+            | <span class="label label-default">与你互粉</span>
+            {% endif %}
+        </p>
+        <p>
+            {% if user == request.user %}
+            <a class="btn btn-primary btn-lg active" href="{% url 'edit_profile' %}">资料编辑</a>
+            {% endif %}
+            {% if request.user.is_superuser %}
+            <a class="btn btn-danger btn-lg active" href="{% url 'edit_profile_admin' user.username %}">资料编辑[Admin]</a>
+            {% endif %}
+        </p>
+    </div>
+</div>
+<h3>{{ user.username }}发布的文章</h3>
+{% include '_posts.html' %}
+{% endblock %}

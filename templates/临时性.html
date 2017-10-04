@@ -1,0 +1,7 @@
+{% for index in posts.paginator.page_range %}
+    {% if index == posts.number %}
+{{ index }}
+    {% else %}
+        <a href="{% url 'index' index %}">{{ index }}</a>
+    {% endif %}
+{% endfor %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load bootstrap3 %}
+
+{% block title %}文章详情页{% endblock %}
+
+{% block page_content %}
+{% include '_posts.html' %}
+
+    <div class='page-header'>
+        <h4>评论列表</h4>
+    </div>
+
+    <div class="col-md-4">
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% bootstrap_form_errors form layout='inline' %}
+            {% buttons %}
+                <button type="submit" class="btn btn-default">
+                    评论
+                </button>
+            {% endbuttons %}
+        </form>
+    </div>
+
+<div class="pagination">
+    {% include '_comments.html' %}
+</div>
+
+{% endblock %}

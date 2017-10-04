@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load pagination_tags %}
+{% load bootstrap3 %}
+
+{% block title %}首页{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>
+        {% if request.user.is_authenticated %}
+{#      而不是想象中的request.user，这只会是个空气      #}
+            {{ request.user.username }}，您好，欢迎回来!
+        {% else %}
+            你还未登陆或注册！
+        {% endif %}
+    </h1>
+<h1>
+    {% if not request.user.confirm_bool %}
+        <p>你还没没有确认安全令牌!<a href="{% url 'auth:resend_confirmed' %}">点击重新接受邮件</a></p>
+    {% endif %}
+</h1>
+</div>
+    {% if request.user.is_authenticated %}
+        <div>
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary btn-lg active">
+                    发布
+                </button>
+            {% endbuttons %}
+        </form>
+    </div>
+    {% endif %}
+<div class="post-tabs">
+    <ul class="nav nav-tabs">
+        <li{% if not show_followed %} class="active"{% endif %}><a href="{% url 'show_all' %}">所有文章</a></li>
+        {% if request.user.is_authenticated %}
+        <li{% if show_followed %} class="active"{% endif %}><a href="{% url 'show_followed' %}">关注用户的文章</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% autopaginate article_list 10 %}
+{#  分页的默认是一页20,要写在分页的对象之前  #}
+{% include '_posts.html' %}
+{% paginate %}
+{% endblock %}

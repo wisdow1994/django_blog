@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load filter_tags %}
+
+{% block title %}{{ user.username }}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>{{ user.username }}--{{ title }}</h1>
+</div>
+<table class="table table-hover followers">
+    <thead><tr><th>用户名</th><th>关注时间</th></tr></thead>
+    {% for follow in follows %}
+        {#      把用户自己从列表中过滤掉      #}
+            <tr>
+                <td>
+                <a href="{% url 'user' follow.user.username %}">
+                    <img class="img-rounded" src="{{ follow.user|avatar:'35'}}"> {{ follow.user.username }}
+                </a>
+                </td>
+        {#        <td>{{ moment(follow.timestamp).format('L') }}</td>#}
+                <td>{{ follow.timestamp }}</td>
+            </tr>
+
+    {% endfor %}
+</table>
+{% endblock %}

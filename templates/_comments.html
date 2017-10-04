@@ -1,0 +1,20 @@
+{% load filter_tags %}
+<ul class="comments">
+    {% for comment in comments %}
+    <li class="comment">
+        <div class="comment-thumbnail">
+            <a href="{% url 'user' comment.user.username %}">
+                <img class="img-rounded profile-thumbnail" src="{{ comment.user|avatar:'40'}}">
+            </a>
+        </div>
+        <div class="comment-content">
+            <div class="comment-author">
+                <a href="{% url 'user' comment.user.username %}">{{ comment.user.username }}</a>
+            </div>
+            <div class="comment-body">
+                {{ comment.content }}
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>

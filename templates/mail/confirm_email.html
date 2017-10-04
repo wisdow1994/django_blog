@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>新修改的邮箱激活</title>
+</head>
+<body>
+<p>亲爱的 {{ reuqest.user.username }},</p>
+<p>Welcome to <b>Django</b>!</p>
+<p>To confirm your account please <a href="{% url 'auth:confirm' token %}">请点击链接</a>.</p>
+<p>Alternatively, you can paste the following link in your browser's address bar:</p>
+<p>或者复制链接在浏览器上打开<p>
+<p>http://127.0.0.1:8000{% url 'auth:change_email' token %}</p>
+<p>Sincerely,</p>
+<p>The Django Team</p>
+<p><small>Note: replies to this email address are not monitored.</small></p>
+
+</body>
+</html>
